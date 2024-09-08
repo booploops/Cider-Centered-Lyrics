@@ -107,6 +107,10 @@ onUnmounted(() => {});
   max-width: 1920px;
   margin: 0 auto;
   transition: grid-template-columns 0.5s linear;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   .metadata-display {
     padding-left: 0em;
     zoom: 1.25;
@@ -134,7 +138,7 @@ onUnmounted(() => {});
 
 .my-layout {
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 1fr;
   height: 100%;
 }
 .main-content {
