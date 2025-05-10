@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import CComponent from "../api/CComponent.vue";
-import { useIdle } from "@vueuse/core";
+import CComponent from "@ciderapp/pluginkit/vue/CComponent.vue";
+import { useIdle, useLocalStorage } from "@vueuse/core";
 import ImmersiveDrawer from "./ImmersiveDrawer.vue";
 
 const { idle } = useIdle(1000);
 const controlsOpened = computed(() => {
   return !idle.value;
+});
+const centeredLyricsTopOffset = useLocalStorage('centered-lyrics-top-offset', 45);
+
+const topOffset = computed(() => {
+  return `${centeredLyricsTopOffset.value}vh`;
 });
 
 watch(controlsOpened, (newVal) => {
@@ -26,17 +31,24 @@ function showTabs() {
   document.querySelector(".immersive-tabs")?.classList.remove("hidden");
 }
 
-onMounted(() => {});
 
-onUnmounted(() => {});
+onMounted(() => {
+});
+
+onUnmounted(() => { });
 </script>
 
 <template>
   <div class="my-layout plugin-base">
     <div class="main-content">
       <div class="left-side"></div>
-      <div class="right-side">
-        <CComponent name="ImmersiveLyricView"></CComponent>
+      <div
+        class="right-side"
+        :style="{
+          '--lyrics-top-offset': topOffset,
+        }"
+      >
+        <cider-immersive-lyric-view></cider-immersive-lyric-view>
       </div>
     </div>
     <div
@@ -46,26 +58,19 @@ onUnmounted(() => {});
       }"
     >
       <div class="artwork">
-        <CComponent name="ImmersiveArtwork"></CComponent>
+        <cider-immersive-artwork></cider-immersive-artwork>
       </div>
       <div class="metadata-display">
         <CComponent name="AMPMetadataMojave"></CComponent>
       </div>
       <div class="controls">
-        <CComponent
-          name="MojavePlayer"
-          :component-props="{
-            noArtwork: true,
-          }"
-        ></CComponent>
+        <cider-mojave-player no-artwork></cider-mojave-player>
       </div>
-      <button class="config-button" @click="showDrawer = !showDrawer">
-        <CComponent
-          name="QIcon"
-          :component-props="{
-            name: 'svguse:cider-assets/cider-icons/icons.svg#queue-music',
-          }"
-        ></CComponent>
+      <button
+        class="config-button"
+        @click="showDrawer = !showDrawer"
+      >
+        <cider-qicon name="svguse:cider-assets/cider-icons/icons.svg#queue-music"></cider-qicon>
       </button>
     </div>
   </div>
@@ -91,7 +96,7 @@ onUnmounted(() => {});
     background: rgba(255, 255, 255, 0.2);
   }
 
-  > * {
+  >* {
     zoom: 2;
   }
 }
@@ -111,6 +116,7 @@ onUnmounted(() => {});
   bottom: 0;
   left: 0;
   right: 0;
+
   .metadata-display {
     padding-left: 0em;
     zoom: 1.25;
@@ -118,6 +124,7 @@ onUnmounted(() => {});
     transition: opacity 0.5s var(--ease_appleSpring),
       padding-left 0.5s var(--ease_appleSpring);
   }
+
   &.is-idle {
     grid-template-columns: auto 30px 1fr auto;
 
@@ -141,6 +148,7 @@ onUnmounted(() => {});
   grid-template-rows: 1fr;
   height: 100%;
 }
+
 .main-content {
   display: grid;
   grid-template-columns: 0fr 1fr;
@@ -224,14 +232,14 @@ onUnmounted(() => {});
   --lyricsMaxSize: 50vw;
   --finishedOpacity: 0;
 
-  padding-top: 32cqh;
-  mask-image: linear-gradient(
-    0deg,
-    transparent 0%,
-    black 20%,
-    black 90%,
-    transparent 100%
-  );
+  padding-top: var(--lyrics-top-offset);
+  mask-image: linear-gradient(0deg,
+      transparent 0%,
+      black 20%,
+      black 90%,
+      transparent 100%);
+  position: fixed;
+  inset: 0;
 
   .lyric-char {
     --defaultColor: rgb(200 200 200 / 80%);
@@ -274,7 +282,7 @@ onUnmounted(() => {});
   }
 
   .lyrics-lower-placeholder {
-    height: 45cqh;
+    height: var(--lyrics-top-offset);
   }
 }
 </style>

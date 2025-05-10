@@ -5,7 +5,7 @@ export default {
     identifier: 'dev.booploops.centered-immersive',
     name: 'Centered Immersive Lyrics Layout',
     description: 'Adds a visualizer to the app.',
-    version: '0.0.1',
+    version: '1.0.0',
     author: 'booploops',
     repo: 'https://github.com/booploops/Cider-Centered-Lyrics',
     entry: {

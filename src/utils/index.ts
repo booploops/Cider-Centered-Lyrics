@@ -1,4 +1,4 @@
-import { useCPlugin } from '../api/CPlugin';
+import { useCPlugin } from '../main';
 import { CustomElements } from './../main';
 
 /**
