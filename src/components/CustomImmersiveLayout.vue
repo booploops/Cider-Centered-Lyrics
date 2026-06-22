@@ -4,8 +4,13 @@ import { useIdle, useLocalStorage } from "@vueuse/core";
 import ImmersiveDrawer from "./ImmersiveDrawer.vue";
 
 const { idle } = useIdle(1000);
+const isPlayerRegionHovered = ref(false);
+const isEffectivelyIdle = computed(() => {
+  return idle.value && !isPlayerRegionHovered.value;
+});
+
 const controlsOpened = computed(() => {
-  return !idle.value;
+  return !isEffectivelyIdle.value;
 });
 const centeredLyricsTopOffset = useLocalStorage('centered-lyrics-top-offset', 45);
 
@@ -54,8 +59,10 @@ onUnmounted(() => { });
     <div
       class="player-container"
       :class="{
-        'is-idle': idle,
+        'is-idle': isEffectivelyIdle,
       }"
+      @mouseenter="isPlayerRegionHovered = true"
+      @mouseleave="isPlayerRegionHovered = false"
     >
       <div class="artwork">
         <cider-immersive-artwork></cider-immersive-artwork>
@@ -64,7 +71,7 @@ onUnmounted(() => { });
         <CComponent name="AMPMetadataMojave"></CComponent>
       </div>
       <div class="controls">
-        <cider-mojave-player no-artwork></cider-mojave-player>
+        <cider-lcdplayer-glass/>
       </div>
       <button
         class="config-button"
@@ -85,7 +92,8 @@ onUnmounted(() => { });
   width: 90px;
   background: transparent;
   border: 0;
-  transition: opacity 0.3s var(--ease_appleSpring);
+  transition: opacity 0.3s var(--ease_appleSpring),
+    transform 0.3s var(--ease_appleSpring);
   margin-right: 1em;
 
   &:hover {
@@ -104,41 +112,49 @@ onUnmounted(() => { });
 .player-container {
   display: grid;
   width: 100%;
-  grid-template-columns: auto 0px 1fr auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
   align-items: center;
   padding-left: 1em;
   padding-bottom: 1em;
   padding-top: 1em;
   max-width: 1920px;
   margin: 0 auto;
-  transition: grid-template-columns 0.5s linear;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
 
   .metadata-display {
-    padding-left: 0em;
+    max-width: 0;
+    overflow: hidden;
+    padding-left: 0;
     zoom: 1.25;
     opacity: 0;
+    transform: translateX(-12px);
     transition: opacity 0.5s var(--ease_appleSpring),
-      padding-left 0.5s var(--ease_appleSpring);
+      padding-left 0.5s var(--ease_appleSpring),
+      max-width 0.5s var(--ease_appleSpring),
+      transform 0.5s var(--ease_appleSpring);
   }
 
   &.is-idle {
-    grid-template-columns: auto 30px 1fr auto;
-
     .metadata-display {
       padding-left: 1em;
+      max-width: 260px;
       opacity: 1;
+      transform: translateX(0);
     }
 
     .controls {
       opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
     }
 
     .config-button {
       opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
     }
   }
 }
@@ -178,9 +194,19 @@ onUnmounted(() => { });
 }
 
 .controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
   zoom: 1.1;
   transition: opacity 0.3s var(--ease_appleSpring),
     transform 0.3s var(--ease_appleSpring);
+}
+
+:deep(cider-lcdplayer-glass) {
+  display: block;
+  width: 100%;
+  max-width: 920px;
 }
 
 .artwork {
