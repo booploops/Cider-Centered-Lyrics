@@ -217,6 +217,15 @@ onUnmounted(() => { });
     transform 0.3s var(--ease_appleSpring), padding 0.3s var(--ease_appleSpring);
 }
 
+:deep(.clp-line) {
+  transform-origin: center;
+}
+
+:deep(.clp-body) {
+  width: auto;
+  text-align: center;
+}
+
 :deep(.lyricView) {
   left: 0;
   width: 100%;

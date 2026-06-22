@@ -1,6 +1,6 @@
 {
   "name": "cider-centered-lyrics",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,31 +10,38 @@
     "prepare-marketplace": "tsx ./scripts/market-pack.cts"
   },
   "dependencies": {
-    "@paralleldrive/cuid2": "^2.2.2",
-    "@vueuse/core": "^10.11.0",
-    "lodash": "^4.17.21",
-    "vue": "^3.5.13"
+    "@paralleldrive/cuid2": "^3.3.0",
+    "@vueuse/core": "^14.3.0",
+    "lodash": "^4.18.1",
+    "vue": "^3.5.38"
   },
   "devDependencies": {
     "@ciderapp/pluginkit": "github:ciderapp/pluginkit",
-    "@types/lodash": "^4.17.6",
-    "@types/node": "^20.14.9",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "adm-zip": "^0.5.14",
-    "sass": "^1.77.6",
-    "tsx": "^4.16.5",
-    "typescript": "^5.2.2",
-    "unplugin-auto-import": "^0.17.6",
-    "vite": "^5.3.1",
-    "vite-plugin-css-injected-by-js": "^3.5.1",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vue-tsc": "^2.0.21",
-    "yaml": "^2.4.5"
+    "@types/lodash": "^4.17.24",
+    "@types/node": "^26.0.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "adm-zip": "^0.5.17",
+    "sass": "^1.101.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "unplugin-auto-import": "^21.0.0",
+    "vite": "^8.0.16",
+    "vite-plugin-css-injected-by-js": "^5.0.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vue-tsc": "^3.3.5",
+    "yaml": "^2.9.0"
   },
   "trustedDependencies": [
     "core-js",
     "esbuild",
     "vue-demi"
   ],
-  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
+  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "vue-demi"
+    ]
+  }
 }
